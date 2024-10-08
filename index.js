@@ -91,14 +91,14 @@ function handleAddCard(){
 }
 
 function handleShowCard(){
- console.log("");
-  console.log(`         ---->>>> View Card Items <<<<----
-
-+----------+-------------------------------+--------------------+------------+
-|   Id     |             Name              |       Price        |  Quantity  |
-+----------+-------------------------------+--------------------+------------+`);
-   Cards.map((book)=>{
-    console.log(`| ${String(book.id).padEnd(8)} | ${book.name.padEnd(29)} | ${String(book.price).padEnd(18)} | ${String(book.quantity).padEnd(10)} |`);
-   })
-console.log(`+----------+-------------------------------+--------------------+------------+`)
-}
+  console.log("");
+   console.log(`         ---->>>> View Card Items <<<<----
+ 
+ +----------+-------------------------------+--------------------+------------+
+ |   Id     |             Name              |       Price        |  Quantity  |
+ +----------+-------------------------------+--------------------+------------+`);
+    Cards.map((book)=>{
+     console.log(`| ${String(book.id).padEnd(8)} | ${book.name.padEnd(29)} | ${String(book.price).padEnd(18)} | ${String(book.quantity).padEnd(10)} |`);
+    })
+ console.log(`+----------+-------------------------------+--------------------+------------+`)
+ }
