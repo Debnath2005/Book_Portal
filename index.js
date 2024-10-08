@@ -20,10 +20,9 @@ let book_store=[
     { id: 116, name: "Animal Farm", price: 150, status: "available", quantity: 15 },
     { id: 117, name: "Les Misérables", price: 999, status: "available", quantity: 7 },
     { id: 118, name: "Dracula", price: 799, status: "unavailable", quantity: 0 },
-    { id: 119, name: "The Picture of Dorian Gray", price: 399, status: "available", quantity: 6 }
-    
+    { id: 119, name: "The Picture of Dorian Gray", price: 399, status: "available", quantity: 1 }   
 ]
-
+let Cards=[]
 function displayMenu(){
     console.log(`
         ****Display Menu****\n
@@ -32,7 +31,7 @@ function displayMenu(){
        3) show cart
       `);
     
-       choice = readline.question('Enter your choice (1, 2 or 3): ');
+      let choice = readline.question('Enter your choice (1, 2 or 3): ');
     
       switch(choice) {
         case '1':
@@ -41,13 +40,16 @@ function displayMenu(){
           break;
         case '2':
           console.log("You selected: add book");
+          handleAddCard()
           break;
         case '3':
           console.log("You selected: show cart");
+          handleShowCard()
           break;
-        
     }
 }
+
+displayMenu()
 
 function handleAvailableBook(){
     console.log(`
@@ -59,5 +61,44 @@ function handleAvailableBook(){
     })
 console.log("+----------+-------------------------------+--------------------+--------------+------------+");
 
+displayMenu()
 }
-handleAvailableBook()
+
+
+function handleAddCard(){
+  let id = readline.question('Enter the Id of Book you want to add to Cart: ');
+  
+  const filter=book_store.filter((book)=>{
+    return book.id==id
+  })
+  
+  if(filter.length!=0 && filter[0].quantity !=0){
+    Cards.push({...filter[0], quantity:1})
+    book_store.forEach((book)=>{
+      if(book.id==id){
+        book.quantity -= 1
+      if(book.quantity==0){
+         book.status="unavailable"
+      }
+      }
+    })
+    console.log("Successfully Book Added To Cart");
+  }
+  else{
+    console.log("Invalid Book Id Or quantity is Empty");
+  }
+  displayMenu()
+}
+
+function handleShowCard(){
+ console.log("");
+  console.log(`         ---->>>> View Card Items <<<<----
+
++----------+-------------------------------+--------------------+------------+
+|   Id     |             Name              |       Price        |  Quantity  |
++----------+-------------------------------+--------------------+------------+`);
+   Cards.map((book)=>{
+    console.log(`| ${String(book.id).padEnd(8)} | ${book.name.padEnd(29)} | ${String(book.price).padEnd(18)} | ${String(book.quantity).padEnd(10)} |`);
+   })
+console.log(`+----------+-------------------------------+--------------------+------------+`)
+}
