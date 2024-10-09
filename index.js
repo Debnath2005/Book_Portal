@@ -65,40 +65,65 @@ displayMenu()
 }
 
 
+
 function handleAddCard(){
-  let id = readline.question('Enter the Id of Book you want to add to Cart: ');
-  
-  const filter=book_store.filter((book)=>{
-    return book.id==id
-  })
-  
-  if(filter.length!=0 && filter[0].quantity !=0){
-    Cards.push({...filter[0], quantity:1})
-    book_store.forEach((book)=>{
-      if(book.id==id){
-        book.quantity -= 1
-      if(book.quantity==0){
-         book.status="unavailable"
-      }
-      }
-    })
-    console.log("Successfully Book Added To Cart");
+  let bookCount=readline.question('how many book want to add.')
+
+  for(let i=0;i<bookCount;i++){
+    let id=readline.question('Enter the Id of Book you want to add to Cart: ');
+    let totalPrice=0;
+    let flag=false;
+    
+     book_store.forEach((book)=>{
+       if(book.id==id && book.quantity>0){
+         var bookQuantity=readline.question('How many book you want to add :')
+         flag=true;
+         if(book.quantity>bookQuantity){
+           totalPrice=book.price * bookQuantity
+         }
+         
+         let bookCard={
+           id:book.id,
+           book_name: book.name,
+           price: book.price,
+           quantity: bookQuantity,
+           total_price: totalPrice
+         }
+         if(book.quantity==0){
+           book.status="unavailable"
+         }
+         Cards.push(bookCard)
+       }
+       // else{
+       //   console.log("Wrong Book Id Or Quantity is not avalible");
+         
+       // }
+     })
+     if(!flag){
+       console.log("Wrong Book Id Or Quantity is not avalible");
+     }
   }
-  else{
-    console.log("Invalid Book Id Or quantity is Empty");
-  }
+
+  
   displayMenu()
 }
 
+
+
 function handleShowCard(){
+  let totalCartPrice=0
   console.log("");
-   console.log(`         ---->>>> View Card Items <<<<----
- 
- +----------+-------------------------------+--------------------+------------+
- |   Id     |             Name              |       Price        |  Quantity  |
- +----------+-------------------------------+--------------------+------------+`);
+console.log(`         ---->>>> View Card Items <<<<----
+
++----------+-------------------------------+--------------------+------------+------------------+
+|   Id     |             Name              |       Price        |  Quantity  |    Total Price   |
++----------+-------------------------------+--------------------+------------+------------------+`);
     Cards.map((book)=>{
-     console.log(`| ${String(book.id).padEnd(8)} | ${book.name.padEnd(29)} | ${String(book.price).padEnd(18)} | ${String(book.quantity).padEnd(10)} |`);
+     console.log(`| ${String(book.id).padEnd(8)} | ${book.book_name.padEnd(29)} | ${String(book.price).padEnd(18)} | ${String(book.quantity).padEnd(10)} | ${String(book.total_price).padEnd(15)}  |`);
+     totalCartPrice+=book.total_price
+    
     })
- console.log(`+----------+-------------------------------+--------------------+------------+`)
+ console.log(`+----------+-------------------------------+--------------------+------------+------------------+`)
+ console.log("Total Cart Price : ",totalCartPrice);
  }
+
