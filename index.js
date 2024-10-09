@@ -81,6 +81,11 @@ function handleAddCard(){
          if(book.quantity>bookQuantity){
            totalPrice=book.price * bookQuantity
          }
+         else{
+          console.log("That much Quantity not available . Try Again...");
+          bookQuantity=readline.question('How many book you want to add :')
+          totalPrice=book.price * bookQuantity
+         }
          
          let bookCard={
            id:book.id,
