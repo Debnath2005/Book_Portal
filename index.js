@@ -29,9 +29,10 @@ function displayMenu(){
        1) show available books to users
        2) add book
        3) show cart
+       4) Update cart
       `);
     
-      let choice = readline.question('Enter your choice (1, 2 or 3): ');
+      let choice = readline.question('Enter your choice (1, 2 , 3 or 4): ');
     
       switch(choice) {
         case '1':
@@ -45,6 +46,10 @@ function displayMenu(){
         case '3':
           console.log("You selected: show cart");
           handleShowCard()
+          break;
+        case '4':
+          console.log("You selected: Update Cart");
+          handleUpdateCart()
           break;
     }
 }
@@ -79,6 +84,7 @@ function handleAddCard(){
          var bookQuantity=readline.question('How many book you want to add :')
          flag=true;
          if(book.quantity>bookQuantity){
+          book.quantity-=bookQuantity
            totalPrice=book.price * bookQuantity
          }
          else{
@@ -107,10 +113,75 @@ function handleAddCard(){
      if(!flag){
        console.log("Wrong Book Id Or Quantity is not avalible");
      }
+     displayMenu()
   }
 
   
   displayMenu()
+}
+
+function handleUpdateCart(){
+  if(Cards.length==0){
+    console.log("Cart is Empty...");
+  }
+  else{
+    console.log(`
+      ****Display Option****\n
+      1) increase quantity
+      2) decrease quantity
+      3) remove 
+    `);
+    let choice=readline.question("Which Option want to chose...")
+    switch(choice) {
+      case '1':
+        console.log("You selected: Increase quantity..");
+        handleIncreaseQuantity();
+        break;
+      case '2':
+        console.log("You selected: decrease quantity..");
+        handleDecreaseQuantity();
+        break;
+      case '3':
+        console.log("You selected: Remove");
+        handleRemove()
+        break;
+    }
+    handleShowCard()
+  }
+}
+
+function handleIncreaseQuantity(){
+  let id=readline.question("Id of book which quantity want to increase. ")
+  let currQuan=0
+  Cards.forEach((book)=>{
+    if(book.id==id){
+      let bookInc=parseInt(readline.question("how many quantity you want to increase. "))
+      book_store.forEach((i)=>{
+           if(i.id==book.id){
+            currQuan=i.quantity
+           }
+      })
+      if(bookInc<=currQuan){
+        book.quantity+=bookInc
+        let incPrice=book.price*bookInc;
+        book.total_price +=incPrice;
+        book_store.forEach((i)=>{
+          if(i.id==book.id){
+           i.quantity-=bookInc
+           if(i.quantity==0){
+            i.status="unavailable"
+           }
+          }
+     })
+      }
+    }
+  })
+}
+
+function handleDecreaseQuantity(){
+   if(Cards.length>0){
+     
+   }
 }
 
 
